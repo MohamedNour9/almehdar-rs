@@ -1,0 +1,23 @@
+{
+  "name": "المحضار للعقار",
+  "short_name": "المحضار",
+  "description": "عقارات للبيع والإيجار في السعودية",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f7f5f0",
+  "theme_color": "#20211f",
+  "orientation": "portrait-primary",
+  "lang": "ar",
+  "dir": "rtl",
+  "icons": [
+    {
+      "src": "/logo.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ],
+  "categories": ["business", "lifestyle"],
+  "scope": "/",
+  "prefer_related_applications": false
+}
