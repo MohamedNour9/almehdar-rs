@@ -1,7 +1,4 @@
 import { Toaster } from "@/components/ui/sonner";
-import { RequireAuth } from "@/components/RequireAuth";
-import { ConvexAuthProvider } from "@convex-dev/auth/react";
-import { ConvexReactClient } from "convex/react";
 import React, { StrictMode, useEffect, lazy, Suspense } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter, Route, Routes, useLocation } from "react-router";
@@ -12,8 +9,6 @@ import SiteLayout from "@/components/SiteLayout";
 
 // Lazy load route components for better code splitting
 const Home = lazy(() => import("./pages/Home.tsx"));
-const AuthPage = lazy(() => import("./pages/Auth.tsx"));
-const Dashboard = lazy(() => import("./pages/Dashboard.tsx"));
 const PropertiesPage = lazy(() => import("./pages/PropertiesPage.tsx"));
 const PropertyDetail = lazy(() => import("./pages/PropertyDetail.tsx"));
 const AboutPage = lazy(() => import("./pages/AboutPage.tsx"));
@@ -97,11 +92,6 @@ class RootErrorBoundary extends React.Component<
     return this.props.children;
   }
 }
-
-const convex = new ConvexReactClient(import.meta.env.VITE_CONVEX_URL as string);
-
-
-
 function RouteSyncer() {
   const location = useLocation();
   useEffect(() => {
@@ -129,33 +119,29 @@ function RouteSyncer() {
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <RootErrorBoundary>
-      <ConvexAuthProvider client={convex}>
-        <BrowserRouter>
-          <RouteSyncer />
-          <Suspense fallback={<RouteLoading />}>
-            <Routes>
-              <Route element={<SiteLayout />}>
-                <Route path="/" element={<Home />} />
-                <Route path="/properties" element={<PropertiesPage />} />
-                <Route path="/properties/:id" element={<PropertyDetail />} />
-                <Route path="/about" element={<AboutPage />} />
-                <Route path="/services" element={<ServicesPage />} />
-                <Route path="/contact" element={<ContactPage />} />
-                <Route path="/guides" element={<GuidesPage />} />
-                <Route path="/add-property" element={<AddProperty />} />
-                <Route path="/favorites" element={<FavoritesPage />} />
-                <Route path="/notifications" element={<NotificationsPage />} />
-                <Route path="/compare" element={<ComparePage />} />
-                <Route path="/calculator" element={<CalculatorPage />} />
-                <Route path="*" element={<NotFound />} />
-              </Route>
-              <Route path="/auth" element={<AuthPage redirectAfterAuth="/dashboard" />} />
-              <Route path="/dashboard" element={<RequireAuth><Dashboard /></RequireAuth>} />
-            </Routes>
-          </Suspense>
-        </BrowserRouter>
+      <BrowserRouter>
+        <RouteSyncer />
+        <Suspense fallback={<RouteLoading />}>
+          <Routes>
+            <Route element={<SiteLayout />}>
+              <Route path="/" element={<Home />} />
+              <Route path="/properties" element={<PropertiesPage />} />
+              <Route path="/properties/:id" element={<PropertyDetail />} />
+              <Route path="/about" element={<AboutPage />} />
+              <Route path="/services" element={<ServicesPage />} />
+              <Route path="/contact" element={<ContactPage />} />
+              <Route path="/guides" element={<GuidesPage />} />
+              <Route path="/add-property" element={<AddProperty />} />
+              <Route path="/favorites" element={<FavoritesPage />} />
+              <Route path="/notifications" element={<NotificationsPage />} />
+              <Route path="/compare" element={<ComparePage />} />
+              <Route path="/calculator" element={<CalculatorPage />} />
+              <Route path="*" element={<NotFound />} />
+            </Route>
+          </Routes>
+        </Suspense>
         <Toaster />
-      </ConvexAuthProvider>
+      </BrowserRouter>
     </RootErrorBoundary>
   </StrictMode>,
 );
